@@ -1,5 +1,7 @@
 .vs
 FlirtGame/bin
 FlirtGame/obj
+FlirtGame/x64
+FlirtGame/x86
 FlirtGame/Content/bin
 FlirtGame/Content/obj
