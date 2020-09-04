@@ -12,14 +12,16 @@ namespace FlirtGame
 {
     class MessageBox : Button
     {
-        public MessageBox(Element parent, Sprite sprite, Point position, Point size,string[] bodyMessage,string bottomMessage) : base(parent, sprite, position, size,GamePlayScreen.renderTextureScale)
+        public MessageBox(Element parent, Sprite sprite, Point position, Point size,string[] bodyMessage,string bottomMessage,bool centralizeText = false) : base(parent, sprite, position, size,GamePlayScreen.renderTextureScale)
         {
             smallfont = ContentLibrary.GetFont(FontList.Sans_serif);
             largefont = ContentLibrary.GetFont(FontList.Sans_serif_large);
             this.bodyMessage = bodyMessage;
             this.bottomMessage = bottomMessage;
+            this.centralizeText = centralizeText;
         }
 
+        private bool centralizeText;
         private SpriteFont smallfont;
         private SpriteFont largefont;
         private string[] bodyMessage;
@@ -30,9 +32,11 @@ namespace FlirtGame
         {
             base.Draw(spriteBatch);
 
+            Vector2 positionOffset = !centralizeText ? new Vector2(30, 25) : (bound.Size.ToVector2() - largefont.MeasureString(bodyMessage[0])*new Vector2(1,bodyMessage.Length)) /2;
+
             for (int i = 0; i < bodyMessage.Length; i++)
                 if (bodyMessage[i] != default(string))
-                    spriteBatch.DrawString(largefont, bodyMessage[i], GlobalPosition + new Vector2(30,25+ 45*i), new Color(192,192,192,255));
+                    spriteBatch.DrawString(largefont, bodyMessage[i], GlobalPosition + positionOffset + Vector2.UnitY *44*i, new Color(192,192,192,255));
 
             Vector2 bottomMessagePosition = (bound.Location + bound.Size).ToVector2() - (smallfont.MeasureString(bottomMessage) + new Vector2(40,15));
             if(ShowBottomText) spriteBatch.DrawString(smallfont, bottomMessage, bottomMessagePosition, new Color(192,192,192,255));

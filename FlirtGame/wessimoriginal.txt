@@ -1,0 +1,212 @@
+<screen id="A">
+	<inputbox target="name">please enter your name </inputbox>
+	<fullscreenmessage> $name;,you have been invited to mahrez birthday </fullscreenmessage>
+	 <Q>
+ 		<CH target ="A-1">accept the invitation </CH> 		<CH targert="A-2">decline the offre and spend the night crying because you did not find a girlfriend
+ 	</CH>
+ 	 	</Q>
+ 	 </screen>
+ 	 <screen id="A-2">
+ 	 <fullscreenmessage>you lost because you're a loser ,you cloud've find a gf that night loser
+ 	 </fullscreenmessage>
+ 	 <CH target="A"></CH>
+ 	</screen>
+ 	 <screen id="A-1">
+ 	 	<m icon="mahrez happy lvl1">heyooooo,welcome to the party ,$name;</m>
+ 	 	<setscreen target="B-2"
+ 	 </screen>
+ 	 <screen id="B-2">
+ 	 	<m icon="mahrez N">yo guys this is my friend ,$name;,introduce yourself</m>
+ 	 	<Q>
+ 	 		<CH target="B-3"><m icon="me">hey,iam,$name;,an enginner in software development
+ 	 		</m></CH>
+ 	 		<CH target="B-3"><m icon="me">yo,iam,$name;,a content creator on instagram></CH></m>
+ 	 		<CH target="B-4"><m icon ="me">yo iam,$name;,a drug dealer ha ha ha></CH></m>
+ 	 		 	 	</Q>
+ 	  </screen>
+ 	 <screen id="B-4">
+ 	 	<fullscreenmessage>you lost ,just tell me how the fuck you plan to make friends by telling them your a drug dealer
+ 	 	</fullscreenmessage>
+ 	 	<CH target="A"></CH>
+ 	 </screen>
+ 	 <screen id="B-3">
+ 	 	<m icon ="monjia happy lvl1">hello,name;,iam monjia an artist,a drawer></m>
+ 	 	<setscreen target="C-1">
+ 	 </screen>
+ 	 <screen id="C-1">
+ 	 		<m icon="mounir happy lvl1 ">konnichwa,iam mounir a mangaka></CH></m>
+ 	 		<setscreen target="C-2">
+ 	</screen> 
+ 	<screen id="C-2">
+ 		<m icon ="mounira happy lvl1">heloo,iam mounira a seller at zahra></m>
+ 		<setscreen target="C-3">
+ 	</screen>
+ 	<screen id="C-3">
+ 		<m icon= "melek SH lvl1">hey,iam melek  a prog euh.. a programeur or whatever></m>
+ 		<setscreen target="C-4">
+ 	</screen>
+ 	<screen id="C-4">
+ 		<m icon="babrin happy lvl1">hey iam sabrine but you can call me babrin,a singer
+ 	<setscreen target="D-1">
+ 	</screen>
+ 	<screen id="D-1">
+ 		<m icon="all happt lvl1"></m>
+ 		<Q>
+ 			<CH target="D-2"><m icon="monjia happy lvl1">ask monjia out...></m></CH>
+ 			<CH target="D-3"><m icon="mounir happy lvl1">ask mounir to go out and have a cigarette></m></CH>
+ 			<CH target="D-4"><m icon "mounira happy lvl1"> talk to mounira only,while the others go one by one 
+ 			<CH target="D-5"><m icon "melek happy lvl1">ask melek if she want to have a beer 
+ 			with you</m></CH>
+ 			<CH target="D-6"><m icon "babrin happy lvl2">ask babrin if she want accompany you to silmehaf concert></m></CH> 
+ 	</Q> 
+ </screen>
+ <screen id="D-2">
+ 	<fullscreenmessage>you lost because you invited someone out ,so you two think that you can go out without others noticing
+ 	<fullscreenmessage>
+ 	<CH target="A"></CH>
+ </screen>
+ <screen id="D-3">
+ 	<fullscreenmessage>you lost because mounir is not a smoker,and you're gay,why are you gay?
+ 	</fullscreenmessage>
+ 	<CH target="A"></CH>
+ </screen>
+ <screen id="D-5">
+ 	<fullscreenmessage> melek slaps you in the face,apparently you forgot she was muslim
+ 	</fullscreenmessage>
+ 	<CH target="A"></CH>
+ </screen>
+ <screen id="C-4">
+ 	<fullscreenmessage>you lost because she is gay...rip xd
+ 	</fullscreenmessage>
+ <CH target="D-6">
+ </screen>
+ <screen id="D-6">
+ 	<m icon="mounira N ">how long have you known mahrez?></m>
+ 		<setscreen target="E-1">
+ </screen>
+ <screen id="E-1">
+ 	<Q>
+ 		<CH target="E-2"><m icon="me happy lvl1">it's been 3 years, i've met him in an amusment park></m></CH>
+ 		<CH target="E-3"><m icon="me happy lvl1">it's been since we were kids what about you></m></CH>
+ 	</Q>
+ </screen>
+ <screen id="E-2"><m icon="mounira N">concerning me it's been only 2 years></m>
+ <setscreen target="F-1">
+ </screen>
+ <screen id="E-3"><m icon="mounira happy lvl 1">concerning me it's been only 2 years,i knew him from a club></m>
+ <setscreen target="F-1">
+ </screen>
+ <screen id="F-1">
+ 	<Q>
+ 		<CH target="H-1"><m icon="me happy lvl1">so mounira,where is your boyfriend?></m></CH>
+ 		<CH target="H-2"><m icon="me happy lvl1"so monjia,where is your boyfriend?></m></CH>
+ 		<CH target="H-3"><m icon="me happy lvl1"do you have you boyfriend></m></CH>
+ 	</Q>
+ <screen id="H-2">
+ 	<fullscreenmessage>you lost because you can't even remember the girls name,bruh, you have alzheimer's disease or what
+ 	</fullscreenmessage>
+ 	<CH target="A" ></CH>
+ </screen>
+ <screen id="H-3">
+ 	<fullscreenmessage>you lost because you'r asking for intimate things ,and its obvious why,try to be more sneaky next time
+ 	</fullscreenmessage>
+ 	<CH target="A"></CH>
+ </screen>
+ <screen id="H-1">
+ 	<m icon="mounira happy lvl1">oh,actualy i dont have a boyfriend></m>
+ 	<setscreen target="K-1">
+ </screen>
+ <screen id="K-1">
+ 	<Q>
+ 	<CH target="K-2" >
+ 		<m icon="me happy lvl1">i can see.</CH>
+ 	<CH target="K-3">
+ 		<m icon="me happy lvl1">you're too beautiful too be single</m></CH>
+ 	</Q>
+ </screen>
+ <screen id="K-2">
+ 	<fullscreenmessage> i see. that's why dont have friends
+ 	</fullscreenmessage>
+ </screen>
+ <screen id="K-3">
+ 	<m icon="mounira happy lvl2">oh thank you ,that's so sweet of you></m>
+ 		<setscreen target="L-1">
+ </screen>
+ <screen id="L-1">
+ 	<Q>
+ 	<CH target="L-2"><m icon="me happy lvl2">ask her if she want to dance with you></m></CH>
+ 	<CH target="L-3"><m icon="me happy lvl2">ask her if she want to be yours></m></CH>
+ </Q>
+</screen>
+<screen id="L-3">
+	<fullscreenmessage>you lost,she was acting like she did not hear you ,she thinks things are going too fast beetween you
+	</fullscreenmessage>
+	<setscreen target="A">
+</screen>
+<screen id="L-2">
+	<m icon="mounira happy lvl2">with pleasure</m>
+	<setscreen target="M-1">
+</screen>
+<screen id="M-1">
+	<Q>
+	<CH target="M-2"><m icon="me happy lvl2">i want to see you dance like you're my thurman ,let me be your jhon trovalta></m></CH>
+	<CH target="M-3"><m icon="me happy lvl2">*dance like you're on a solo dance and look to the girl*</m></CH>
+	<CH target="M-4"><m icon="me happy lvl2">*hareb hareb hareb*></m></CH>
+	</Q>
+</screen>
+<screen id="M-2">
+	<fullscreenmessage>you lost because you're a simp</fullscreenmessage>
+	<setscreen target="A">
+</screen>
+<screen id="M-4">
+	<fullscreenmessage>you lost because you're a frère,we dont need those kinda users ,there is no game!
+	</fullscreenmessage>
+	<setscreen target="A">
+</screen>
+<screen id="M-3">
+	<Q>
+		<CH target="N-1"><m icon="happy lvl1">*the party is getting over*ask her for her number></m></CH>
+		<CH target="N-2"><m icon="happy lvl1"><*the party is getting over*wait for her to ask for your number></m></CH>
+	</Q>
+</screen>
+<screen id="N-2">
+	<fullscreenmessage> you lost , she did not ask you, she is a coward just like you
+	</fullscreenmessage>
+	<setscreen target="A">
+</screen>
+<screen id="N-1">
+	<m icon="mounira happy lvl2">260007></m>
+	<setscreen target="O-1">
+</screen>
+<screen id="O-1">
+	<m icon="mounira happy lvl1"> oh,fuck it's late now, can you escort me home please></m>
+	<setscreen target="O-2">
+</screen>
+<screen id="O-2">
+	<Q>
+	<CH target="P-1"><m icon="me happy lvl1">oh, okay with pleasure></m></CH/>
+	<CH target="P-2"><m icon="me happy lvl1">acctually i can not mom is calling me to go home></m></CH>
+	</Q>
+</screen>
+<screen id="P-2">
+	<fullscreenmessage> you lost,because you're a virgin living in your parents house </fullscreenmessage>
+	<setscreen target="A">
+</screen>
+<screen id="P-1">
+	<fullscreenmessage>you're in front of her house,and it's raining </fullscreenmessage>
+	<setscreen target="P-3">
+</screen>
+<screen id="P-4">
+	<Q>	
+	<CH target="P-5"><m icon="me happy lvl2">kiss her on cheeks,and go home></CH></m>
+	<CH target="P-6"><m icon="me happy lvl2">tell her if  you can enter her home until it stops raining></m></CH>
+</screen>
+<screen id="P-5">
+	<fullscreenmessage>end..you're always the good old friend </fullscreenmessage>
+<screen id="P-6">
+	<m icon="mounira happy lvl2">yes you can</m>
+	<setscreen target="W-1">
+</screen>
+<screen id="W-1">
+	<fullscreenmessage>end.. it kept raining all th night ,you slept in monira is house ,you both started daiting since then</fullscreenmessage>
+</screen>

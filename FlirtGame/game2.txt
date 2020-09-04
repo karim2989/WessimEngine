@@ -1,0 +1,25 @@
+<Screen id="A">
+	<M icon="person1H">when you where here before</M>
+	<M icon="person4H">couldnt just you in the eyes</M>
+	<M icon="SabrineH">you just like an angel</M>
+	<M icon="person2H">your skin makes me cry</M>
+	<Q question="kammil il 4onneya">
+        	<CH icon="person1N">you float like a feather</CH>
+        	<CH icon="person1h" target="A-2"> i wish i was special</CH>
+    	</Q>
+	<M icon="person3H"> in the beautiful world</M>
+	<M icon="person3H"> i wish i was special</M>
+	<M icon="Wessim Happy"> you so fuckin special</M>
+	<SetScreen target="A-1"/>
+</Screen>
+
+<Screen id="A-2">
+	<SetEmotion emotion="person3A"/>
+	<SetEmotion emotion="person4A"/>
+    	<M icon="person2A" wait="no"> 4alit rabbik </M>
+	<M icon="person4A"> balla3 nayyek </M>
+</Screen>
+
+<Screen id="A-1">
+	<m icon="sabrine happy">sa77it</m>
+</Screen>

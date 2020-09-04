@@ -60,6 +60,7 @@ namespace Engine.UI
             foreach (var element in Children)
                 element.Draw(spriteBatch);
         }
+        public void DestroyChildren() => Children.Clear();
     }
     public class Container : Element
     {

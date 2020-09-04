@@ -22,8 +22,8 @@ namespace FlirtGame
 
             IsMouseVisible = true;
 
-            Graphics.PreferredBackBufferWidth = 1080 / 4;
-            Graphics.PreferredBackBufferHeight = 1920 / 4;
+            Graphics.PreferredBackBufferWidth = 1080 / 3;
+            Graphics.PreferredBackBufferHeight = 1920 / 3;
         }
 
         /// <summary>
@@ -52,6 +52,8 @@ namespace FlirtGame
             ContentLibrary.LoadedTexture(Content,GraphicsDevice);
             ContentLibrary.LoadSprites(Content,GraphicsDevice);
             ContentLibrary.LoadFont(Content);
+            ContentLibrary.LoadSounds(Content);
+            ContentLibrary.loadXml(Content);
 
             gamePlayScreen.Start();
 
@@ -76,6 +78,11 @@ namespace FlirtGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.F5))
+            {
+                gamePlayScreen = new GamePlayScreen(this, Graphics);
+                gamePlayScreen.Start();
+            }
 
             gamePlayScreen.Update(gameTime);
 

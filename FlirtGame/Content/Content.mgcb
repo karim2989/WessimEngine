@@ -25,12 +25,33 @@
 /processorParam:TextureFormat=Color
 /build:../../../../Users/Admin/Pictures/FlirtUITileset.png;FlirtUITileset.png
 
+#begin ../game.xml
+/copy:../game.xml;game.xml
+
+#begin au.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:au.wav
+
+#begin ba.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ba.wav
+
 #begin File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:File.spritefont;Sans-serif.spritefont
+
+#begin oy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:oy.wav
 
 #begin Pixel.png
 /importer:TextureImporter
@@ -50,4 +71,10 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:robotolarge.spritefont
+
+#begin ta.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:ta.wav
 
