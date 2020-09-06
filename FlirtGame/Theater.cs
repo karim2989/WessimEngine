@@ -13,36 +13,42 @@ namespace FlirtGame
 {
     public class Theater
     {
-        public static Vector2 TheaterSize = new Vector2(128, 72);
+        public static Vector2 TheaterSize = new Vector2(192, 72);
         RenderTarget2D renderTexture;
         public bool Active { get; set; } = true;
 
         public TheaterCharacter[] TheaterCharacters = new TheaterCharacter[7];
+        public Sprite Env { get; set; }
         public Theater(RenderTarget2D renderTexture)
         {
+            int bodyWidth = 38;
+            int charactetOffset = 20;
+
+            Env = ContentLibrary.GetSprite(SpriteList.env_school);
+
             this.renderTexture = renderTexture;
             TheaterCharacters[0] = ContentLibrary.GetTheaterCharacter(TheaterCharactersList.character1);
-            TheaterCharacters[0].Position = new Vector2(16, 62);
+            TheaterCharacters[0].Position = new Vector2(bodyWidth + charactetOffset * 0, 61);
             TheaterCharacters[0].Fliped = true;
 
             TheaterCharacters[1] = ContentLibrary.GetTheaterCharacter(TheaterCharactersList.character2);
-            TheaterCharacters[1].Position = new Vector2(38, 62);
+            TheaterCharacters[1].Position = new Vector2(bodyWidth + charactetOffset * 1, 61);
             TheaterCharacters[1].Fliped = true;
 
             TheaterCharacters[2] = ContentLibrary.GetTheaterCharacter(TheaterCharactersList.character3);
-            TheaterCharacters[2].Position = new Vector2(58, 62);
+            TheaterCharacters[2].Position = new Vector2(bodyWidth + charactetOffset * 2, 62);
 
             TheaterCharacters[3] = ContentLibrary.GetTheaterCharacter(TheaterCharactersList.character4);
-            TheaterCharacters[3].Position = new Vector2(64, 62);
+            TheaterCharacters[3].Position = new Vector2(bodyWidth + charactetOffset * 3, 61);
 
             TheaterCharacters[4] = ContentLibrary.GetTheaterCharacter(TheaterCharactersList.character5);
-            TheaterCharacters[4].Position = new Vector2(86, 62);
+            TheaterCharacters[4].Position = new Vector2(bodyWidth + charactetOffset * 4, 61);
 
             TheaterCharacters[5] = ContentLibrary.GetTheaterCharacter(TheaterCharactersList.character6);
-            TheaterCharacters[5].Position = new Vector2(100, 62);
+            TheaterCharacters[5].Position = new Vector2(bodyWidth + charactetOffset * 5, 61);
 
             TheaterCharacters[6] = ContentLibrary.GetTheaterCharacter(TheaterCharactersList.character7);
-            TheaterCharacters[6].Position = new Vector2(112, 62);
+            TheaterCharacters[6].Position = new Vector2(bodyWidth + charactetOffset * 6, 61);
         }
 
         public void Update()
@@ -56,9 +62,8 @@ namespace FlirtGame
         {
             if (!Active) return;
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, null);
-            
-            ContentLibrary.GetSprite(SpriteList.env_bar1).Draw(spriteBatch,new Rectangle(Point.Zero,TheaterSize.ToPoint()),0,false,Color.White);
 
+            Env.Draw(spriteBatch, Vector2.Zero);
 
             foreach (var c in TheaterCharacters)
                 c.Draw(spriteBatch);
@@ -72,6 +77,8 @@ namespace FlirtGame
 
         public Vector2 Position { get; set; }
         public bool Fliped { get; set; }
+        public bool FlipedLocked { get; set; }
+        public bool Visible { get; set; } = false;
 
         public Sprite BodySprite { get; set; }
 
@@ -98,14 +105,15 @@ namespace FlirtGame
         {
             Name = name;
             BodySprite = bodySprite;
+            currentAction = IdleCoroutine();
         }
 
         public void Update()
         {
             bool actionFinished = false;
             if(currentAction != null) actionFinished = !currentAction.MoveNext();
-            
 
+            if (actionFinished) currentAction = IdleCoroutine();
 
             if (currentLowerHead == null) currentLowerHead = LowerHeadSpriteN;
             if (currentUpperHead == null) currentUpperHead = UpperHeadSpriteN;
@@ -140,18 +148,52 @@ namespace FlirtGame
         }
 
         public float JawYOffset { get; set; }
+        public float HeadYOffset { get; set; }
         public float JawRotation { get; set; }
         public float HeadOffset { get; set; }
+        public float PositionYOffset;
 
-        Vector2 bodyPosition => Position - Vector2.UnitY * 16;
-        Vector2 lowerPosition => Position - Vector2.UnitY * (24 + HeadOffset);
-        Vector2 upperPosition => Position - Vector2.UnitY * (40 + JawYOffset + HeadOffset);
+        Vector2 bodyPosition => Position - Vector2.UnitY  * ( PositionYOffset + 16);
+        Vector2 lowerPosition => Position - Vector2.UnitY * ( PositionYOffset + (24 + HeadYOffset + HeadOffset));
+        Vector2 upperPosition => Position - Vector2.UnitY * ( PositionYOffset + (40 + HeadYOffset + JawYOffset + HeadOffset));
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (!Visible) return;
             BodySprite.Draw(spriteBatch, bodyPosition, centered:true, spriteEffect:Fliped?SpriteEffects.FlipHorizontally:SpriteEffects.None);
             currentLowerHead.Draw(spriteBatch, lowerPosition, centered:true, spriteEffect:Fliped?SpriteEffects.FlipHorizontally:SpriteEffects.None);
             currentUpperHead.Draw(spriteBatch, upperPosition, centered:true, spriteEffect:Fliped?SpriteEffects.FlipHorizontally:SpriteEffects.None, rotation:JawRotation);
+        }
+
+        public void WalkIn() => currentAction = WalkInCoroutine();
+        public Coroutine WalkInCoroutine()
+        {
+            float time = 15f;
+            float dirention = Fliped ? 1:-1;
+            for (int j = 0; j < 6; j++)
+            {
+                ContentLibrary.GetSound(SoundList.jump).Play();
+                for (int i = 0; i < (int)time; i++)
+                {
+                    Position = new Vector2(Position.X + 2 * dirention ,Position.Y);
+                    PositionYOffset = (float)Math.Sin((1 / time) * i * Math.PI) * 5;
+                    yield return 0;
+                }
+                for (int i = 0; i < 2; i++) yield return 0;
+            }
+        }
+
+        public Coroutine IdleCoroutine()
+        {
+            for (int i = 0; i < GamePlayScreen.random.Next(0, 80); i++) yield return 0;
+            while (true)
+            {
+                HeadYOffset = 0;
+                for (int i = 0; i < GamePlayScreen.random.Next(30, 200); i++) yield return 0;
+                HeadYOffset = 1;
+                for (int i = 0; i < 60; i++) yield return 0;
+                //if (GamePlayScreen.random.Next(0, 36) == 6 && !FlipedLocked) Fliped = !Fliped; 
+            }
         }
 
         public void Talk(int speachLength = 3) => currentAction = TalkCoroutine(speachLength);

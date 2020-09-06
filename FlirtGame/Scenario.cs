@@ -112,6 +112,11 @@ namespace FlirtGame
                 case "question": return new Question(screen,source);
                 case "q": return new Question(screen,source);
                 case "fullscreenmessage": return new FullscrrenMessage(screen,source);
+                case "fadeout": return new FadeOut(screen, source);
+                case "fadein": return new FadeIn(screen, source);
+                case "characterstate": return new CharacterState(screen,source);
+                case "wait": return new Wait(screen, source);
+                case "setenvirement": return new SetEnvirement(screen, source);
                 default: throw new Exception($"unrecognized command {source.Name}");
             }
         }
@@ -137,11 +142,125 @@ namespace FlirtGame
             return output.ToArray();
         }
     }
-    
+
+    public class Wait : Command
+    {
+        public Wait(Screen screen,XmlNode source)
+        {
+            Screen = screen;
+            time = source.Attributes["time"] == null ? 1 : int.Parse(source.Attributes["time"].Value);
+        }
+        int time;
+
+        public override Coroutine ExecutionProcess()
+        {
+            for (int i = 0; i < time; i++) yield return 0;
+        }
+    }
+
+    public class CharacterState : Command
+    {
+        public CharacterState(Screen screen,XmlNode source)
+        {
+            string characterName = source.Attributes["character"].Value;
+
+            characterName = characterName.ToLower();
+
+            for (int i = 0; i < screen.scenario.CharacterNames.Length; i++)
+                characterName = characterName.Replace($"{screen.scenario.CharacterNames[i]}", $"person{i + 1}");
+
+            characterName = characterName.Replace(" ", "");
+            characterName = characterName.Replace("lvl1", "");
+            characterName = characterName.Replace("lvl2", "");
+
+            for (int i = 0; i < characterName.Length; i++)
+                if(char.IsNumber(characterName[i]))
+                    characterIndex = int.Parse(characterName[i].ToString()) - 1;
+
+            emotion = source.Attributes["emotion"] == null ? default(string) : source.Attributes["emotion"].Value;
+            action = source.Attributes["action"] == null ? default(string) : source.Attributes["action"].Value;
+            position = source.Attributes["position"] == null ? default(string) : source.Attributes["position"].Value;
+            direction = source.Attributes["direction"] == null ? default(string) : source.Attributes["direction"].Value;
+            visible = source.Attributes["visible"] == null ? default(string) : source.Attributes["visible"].Value;
+
+            if (characterIndex == -1) throw new Exception($"please specify character {source.OuterXml}");
+        }
+        int characterIndex = -1;
+        string visible;
+        string emotion;
+        string action;
+        string position;
+        string direction;
+
+        public override Coroutine ExecutionProcess()
+        {
+
+            //visible
+            if (visible != default(string) && visible != "" && visible != null)
+                GamePlayScreen.Theater.TheaterCharacters[characterIndex].Visible = visible.ToLower() == "true"? true : false;
+
+            //direction
+            if (direction != default(string) && direction != "" && direction != null)
+                GamePlayScreen.Theater.TheaterCharacters[characterIndex].Fliped = direction.ToLower() == "right"? true : false;
+
+            //action
+            if(action != default(string) && action != "" && action != null)
+            {
+                if (action.ToLower() == "talk") GamePlayScreen.Theater.TheaterCharacters[characterIndex].Talk(1);
+                if (action.ToLower() == "walkin") GamePlayScreen.Theater.TheaterCharacters[characterIndex].WalkIn();
+            }
+
+            //emotion
+            if(emotion != default(string) && emotion != "" && emotion != null)
+                GamePlayScreen.Theater.TheaterCharacters[characterIndex].SetEmotion(emotion.ToLower()[0]);
+
+            // position
+            if (position != default(string) && position != "" && position != null)
+                if (position.Contains(','))
+                {
+                    var posDigits = position.Split(',');
+                    GamePlayScreen.Theater.TheaterCharacters[characterIndex].Position = new Vector2(float.Parse(posDigits[0]), float.Parse(posDigits[1]));
+                }
+                else GamePlayScreen.Theater.TheaterCharacters[characterIndex].Position = new Vector2(float.Parse(position), GamePlayScreen.Theater.TheaterCharacters[characterIndex].Position.Y);
+
+            yield return 0;
+        }
+    }
+
+    public class FadeOut : Command
+    {
+        public FadeOut(Screen screen, XmlNode source) => Screen = screen;
+
+        public override Coroutine ExecutionProcess()
+        {
+            for (int i = 0; i < 40; i++)
+            {
+                GamePlayScreen.MainTextureTintColor = Color.Lerp(Color.White, Color.Transparent, (1f / 40f) * i);
+                yield return 0;
+            }
+            for (int i = 0; i < 10; i++) yield return 0;
+        }
+    }
+
+    public class FadeIn : Command
+    {
+        public FadeIn(Screen screen, XmlNode source) => Screen = screen;
+
+        public override Coroutine ExecutionProcess()
+        {
+            for (int i = 40 - 1; i >= 0; i--)
+            {
+                GamePlayScreen.MainTextureTintColor = Color.Lerp(Color.White, Color.Transparent, (1f / 40f) * i);
+                yield return 0;
+            }
+            for (int i = 0; i < 10; i++) yield return 0;
+        }
+    }
+
     public class Message : Command
     {
-        static Color bgColor = new Color(77,77,77,255);
-        static Color highlightedColor = new Color(100,100,100,255);
+        private Color bgColor = new Color(77,77,77,255);
+        private Color highlightedColor = new Color(100,100,100,255);
 
         public Message(Screen screen,XmlNode source)
         {
@@ -168,17 +287,32 @@ namespace FlirtGame
         { 
             foreach (var variable in Screen.scenario.Variables)
                 bodyText = bodyText.Replace($"${variable.Key};", variable.Value);
-            var container = new Container(GamePlayScreen.Canvas, new Vector2(8, GamePlayScreen.Canvas.Area.Size.Y));
-            var messagebox = new MessageBox(container,ContentLibrary.GetSprite(SpriteList.messageBoxSmall),new Point(33*8,4*8),new Point(100*8,24*8 + 4), segmentateMessage(bodyText,28),"press to continue");
-            messagebox.TintColor = bgColor;
-            var icon = new Image(container, ContentLibrary.GetSprite(iconName), Vector2.Zero, 8,SpriteEffects.FlipHorizontally);
-            if (iconName.Contains("person1")) { GamePlayScreen.Theater.TheaterCharacters[0].Talk(); GamePlayScreen.Theater.TheaterCharacters[0].SetEmotion(iconName.Replace("person1", "")[0]); }
-            if (iconName.Contains("person2")) { GamePlayScreen.Theater.TheaterCharacters[1].Talk(); GamePlayScreen.Theater.TheaterCharacters[1].SetEmotion(iconName.Replace("person2", "")[0]); }
-            if (iconName.Contains("person3")) { GamePlayScreen.Theater.TheaterCharacters[2].Talk(); GamePlayScreen.Theater.TheaterCharacters[2].SetEmotion(iconName.Replace("person3", "")[0]); }
-            if (iconName.Contains("person4")) { GamePlayScreen.Theater.TheaterCharacters[3].Talk(); GamePlayScreen.Theater.TheaterCharacters[3].SetEmotion(iconName.Replace("person4", "")[0]); }
-            if (iconName.Contains("person5")) { GamePlayScreen.Theater.TheaterCharacters[4].Talk(); GamePlayScreen.Theater.TheaterCharacters[4].SetEmotion(iconName.Replace("person5", "")[0]); }
-            if (iconName.Contains("person6")) { GamePlayScreen.Theater.TheaterCharacters[5].Talk(); GamePlayScreen.Theater.TheaterCharacters[5].SetEmotion(iconName.Replace("person6", "")[0]); }
-            if (iconName.Contains("person7")) { GamePlayScreen.Theater.TheaterCharacters[6].Talk(); GamePlayScreen.Theater.TheaterCharacters[6].SetEmotion(iconName.Replace("person7", "")[0]); }
+
+            Container container;
+            MessageBox messagebox;
+            Image icon;
+
+            if (iconName[6] == '1')
+            {
+                container = new Container(GamePlayScreen.Canvas, new Vector2(8, GamePlayScreen.Canvas.Area.Size.Y));
+                messagebox = new MessageBox(container,ContentLibrary.GetSprite(SpriteList.messageBoxSmall),new Point(8,4*8),new Point(100*8,24*8 + 4), segmentateMessage(bodyText,28),"press to continue");
+
+                bgColor = Color.MediumBlue;
+                highlightedColor = Color.MediumBlue;
+
+                messagebox.TintColor = bgColor;
+                icon = new Image(container, ContentLibrary.GetSprite(iconName), new Vector2(101*8,0), 8,SpriteEffects.None);
+            }
+            else
+            {
+                container = new Container(GamePlayScreen.Canvas, new Vector2(8, GamePlayScreen.Canvas.Area.Size.Y));
+                messagebox = new MessageBox(container,ContentLibrary.GetSprite(SpriteList.messageBoxSmall),new Point(33*8,4*8),new Point(100*8,24*8 + 4), segmentateMessage(bodyText,28),"press to continue");
+                icon = new Image(container, ContentLibrary.GetSprite(iconName), Vector2.Zero, 8,SpriteEffects.FlipHorizontally);
+                messagebox.TintColor = bgColor;
+            }
+
+            for (int i = 0; i < 7; i++)
+                if (iconName.Contains($"person{i+1}")) { GamePlayScreen.Theater.TheaterCharacters[i].Talk(bodyText.Length / 10 + 1); GamePlayScreen.Theater.TheaterCharacters[i].SetEmotion(iconName.Replace($"person{i+1}", "")[0]); }
 
             float targetOffset = 32*8 + 20;
             int time = 7;
@@ -251,6 +385,21 @@ namespace FlirtGame
             yield return 0;
         }
     }
+    public class SetEnvirement : Command
+    {
+        public SetEnvirement(Screen screen,XmlNode source)
+        {
+            Screen = screen;
+            envName = source.Attributes["envirement"].Value;
+        }
+        string envName;
+
+        public override Coroutine ExecutionProcess()
+        {
+            GamePlayScreen.Theater.Env = ContentLibrary.GetSprite(envName);
+            yield return 0;
+        }
+    }
     public class SetScreen : Command
     {
         public SetScreen(Screen screen,XmlNode source)
@@ -297,7 +446,16 @@ namespace FlirtGame
                 foreach (var variable in Screen.scenario.Variables)
                     r.ResponseText = r.ResponseText.Replace($"${variable.Key};", variable.Value);
 
-                var responseBox = new MessageBox(container, ContentLibrary.GetSprite(SpriteList.choiceMessageBox), new Point(0, targetOffset), new Point(120 * 8, 16 * 8), segmentateMessage($" {i + 1}   {r.ResponseText}",40), "");
+                string[] responseText = segmentateMessage(r.ResponseText,38);
+                responseText[0] = $" {i + 1} {responseText[0]}";
+                for (int j = 1; j < responseText.Length; j++)
+                    responseText[j] = $"    {responseText[j]}";
+
+                MessageBox responseBox;
+                if (responseText.Length == 1)
+                     responseBox = new MessageBox(container, ContentLibrary.GetSprite(SpriteList.choiceMessageBox), new Point(0, targetOffset), new Point(120 * 8, 16 * 8), responseText, "");
+                else
+                     responseBox = new MessageBox(container, ContentLibrary.GetSprite(SpriteList.choiceMessageBoxLarge), new Point(0, targetOffset), new Point(120 * 8, 24 * 8), responseText, "");
                 responseBox.TintColor = Color.MediumBlue;
                 targetOffset += responseBox.Size.Y + 10;
                 responseBox.OnJustPressed += () => responseBox.TintColor = new Color(0, 0, 215);
@@ -332,7 +490,7 @@ namespace FlirtGame
 
             targetOffset = 0;
             //show the response
-            var messagebox = new MessageBox(container, ContentLibrary.GetSprite(SpriteList.messageBoxSmall), new Point(0, 4 * 8), new Point(100 * 8, 24 * 8 + 4), new[] { chosenResponse.ResponseText }, "");
+            var messagebox = new MessageBox(container, ContentLibrary.GetSprite(SpriteList.messageBoxSmall), new Point(0, 4 * 8), new Point(100 * 8, 24 * 8 + 4), segmentateMessage(chosenResponse.ResponseText,30), "");
             messagebox.TintColor = Color.MediumBlue;
             var icon = new Image(container, ContentLibrary.GetSprite(chosenResponse.IconName), new Vector2(101 * 8, 0), 8, SpriteEffects.None);
             targetOffset = 32 * 8 + 20;
@@ -347,13 +505,9 @@ namespace FlirtGame
             }
 
             var iconName = chosenResponse.IconName;
-            if (iconName.Contains("person1")) { GamePlayScreen.Theater.TheaterCharacters[0].Talk(); GamePlayScreen.Theater.TheaterCharacters[0].SetEmotion(iconName.Replace("person1", "")[0]); }
-            if (iconName.Contains("person2")) { GamePlayScreen.Theater.TheaterCharacters[1].Talk(); GamePlayScreen.Theater.TheaterCharacters[1].SetEmotion(iconName.Replace("person2", "")[0]); }
-            if (iconName.Contains("person3")) { GamePlayScreen.Theater.TheaterCharacters[2].Talk(); GamePlayScreen.Theater.TheaterCharacters[2].SetEmotion(iconName.Replace("person3", "")[0]); }
-            if (iconName.Contains("person4")) { GamePlayScreen.Theater.TheaterCharacters[3].Talk(); GamePlayScreen.Theater.TheaterCharacters[3].SetEmotion(iconName.Replace("person4", "")[0]); }
-            if (iconName.Contains("person5")) { GamePlayScreen.Theater.TheaterCharacters[4].Talk(); GamePlayScreen.Theater.TheaterCharacters[4].SetEmotion(iconName.Replace("person5", "")[0]); }
-            if (iconName.Contains("person6")) { GamePlayScreen.Theater.TheaterCharacters[5].Talk(); GamePlayScreen.Theater.TheaterCharacters[5].SetEmotion(iconName.Replace("person6", "")[0]); }
-            if (iconName.Contains("person7")) { GamePlayScreen.Theater.TheaterCharacters[6].Talk(); GamePlayScreen.Theater.TheaterCharacters[6].SetEmotion(iconName.Replace("person7", "")[0]); }
+
+            for (int i = 0; i < 7; i++)
+                if (iconName.Contains($"person{i+1}")) { GamePlayScreen.Theater.TheaterCharacters[i].Talk(chosenResponse.ResponseText.Length / 10 + 1); GamePlayScreen.Theater.TheaterCharacters[i].SetEmotion(iconName.Replace($"person{i+1}", "")[0]); }
 
             for (int i = 0; i < 60; i++) yield return 0; //wait for 60 frames. to make the conversation feel natural
         }
@@ -397,7 +551,7 @@ namespace FlirtGame
                 message = message.Replace($"${variable.Key};", variable.Value);
 
             var desposableContainer = new Container(GamePlayScreen.Canvas, Vector2.Zero);
-            var messagebox = new MessageBox(desposableContainer, ContentLibrary.GetSprite(SpriteList.messageBoxMedium), new Point(-1000, -607 -1000), new Point(1080 + 2000, 1920 + 2000), segmentateMessage(message,35), "",true);
+            var messagebox = new MessageBox(desposableContainer, ContentLibrary.GetSprite(SpriteList.messageBoxMedium), new Point(-1000, -462 -1000), new Point(1080 + 2000, 1920 + 2000), segmentateMessage(message,35), "",true);
             messagebox.TintColor = Color.DimGray;
             bool locked = true;
 

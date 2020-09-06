@@ -32,6 +32,7 @@ namespace FlirtGame
         messageBoxSmall,
         messageBoxMedium,
         choiceMessageBox,
+        choiceMessageBoxLarge,
         questionMessageBox,
 
         person1_N_Icon,
@@ -130,6 +131,7 @@ namespace FlirtGame
         person7_body,
 
         env_bar1,
+        env_school,
 
         ListSize
     }
@@ -140,6 +142,9 @@ namespace FlirtGame
         au,
         ta,
         oy,
+
+        jump,
+
         ListSize
     }
 
@@ -189,6 +194,7 @@ namespace FlirtGame
             loadedSprites[(int)SpriteList.messageBoxMedium]     = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), Point.Zero, new Point(100, 32));
             loadedSprites[(int)SpriteList.messageBoxSmall]      = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(0,32), new Point(100, 24));
             loadedSprites[(int)SpriteList.choiceMessageBox]     = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(0,56), new Point(120, 16));
+            loadedSprites[(int)SpriteList.choiceMessageBoxLarge]= TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(0,88), new Point(120, 24));
             loadedSprites[(int)SpriteList.questionMessageBox]   = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(0,72), new Point(120, 16));
 
             loadedSprites[(int)SpriteList.person1_N_Icon] = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(384, 0), new Point(32, 32));
@@ -304,8 +310,9 @@ namespace FlirtGame
             loadedSprites[(int)SpriteList.person5_body] = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(256 + 128, 128), new Point(32,32));
             loadedSprites[(int)SpriteList.person7_body] = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(256 + 160, 128), new Point(32,32));
             loadedSprites[(int)SpriteList.person6_body] = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(256 + 192, 128), new Point(32,32));
-
-            loadedSprites[(int)SpriteList.env_bar1] = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(384, 440), new Point(128, 72));
+            
+            loadedSprites[(int)SpriteList.env_bar1] = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(320, 440), new Point(192, 72));
+            loadedSprites[(int)SpriteList.env_school] = TileSplitter.SplitSprite(graphicsDevice, GetTexture(TextureList.atlas1), new Point(320-192, 440), new Point(192, 72));
         }
 
         private static SoundEffect[] loadedSoundEffects;
@@ -318,6 +325,8 @@ namespace FlirtGame
             loadedSoundEffects[(int)SoundList.au] = content.Load<SoundEffect>("au");
             loadedSoundEffects[(int)SoundList.ta] = content.Load<SoundEffect>("ta");
             loadedSoundEffects[(int)SoundList.oy] = content.Load<SoundEffect>("oy");
+
+            loadedSoundEffects[(int)SoundList.jump] = content.Load<SoundEffect>("jump");
         }
 
         private static TheaterCharacter[] loadedTheaterCharacters;
@@ -439,6 +448,8 @@ namespace FlirtGame
 
             switch (name)
             {
+                case "bar":case "env_bar": return GetSprite(SpriteList.env_bar1);
+                case "school":case "env_school": return GetSprite(SpriteList.env_school);
                 case "person1a": return GetSprite(SpriteList.person1_A_Icon);
                 case "person1h": return GetSprite(SpriteList.person1_H_Icon);
                 case "person1s": return GetSprite(SpriteList.person1_S_Icon);

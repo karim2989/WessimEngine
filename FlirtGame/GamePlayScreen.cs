@@ -30,6 +30,7 @@ namespace FlirtGame
         private RenderTarget2D mainRenderTexture;
         public static float renderTextureScale;
         private Vector2 renderTextureOffset;
+        public static Color MainTextureTintColor { get; set; } = Color.White;
 
         private RenderTarget2D theaterRenderTexture;
         public static float theaterScale;
@@ -41,7 +42,7 @@ namespace FlirtGame
 
         public override void Start()
         {
-            Canvas = new Canvas(new Rectangle(0, 607, 1080, 1920 - 607));
+            Canvas = new Canvas(new Rectangle(0, 462, 1080, 1920 - 462));
 
             //scenario = Scenario.FromString(File.ReadAllText("c:\\dev\\FlirtGame\\FlirtGame\\game.txt"));
             scenario = Scenario.FromString(ContentLibrary.GetXml(XmlFile.game1));
@@ -67,7 +68,7 @@ namespace FlirtGame
 
                 Canvas.Draw(spriteBatch);
 
-                Rectangle theaterDestRect = new Rectangle(Point.Zero,(new Vector2(1080, 607)).ToPoint());
+            Rectangle theaterDestRect = new Rectangle(Point.Zero,(new Vector2(1080, 462)).ToPoint());
                 if(Theater.Active)
                     spriteBatch.Draw(theaterRenderTexture, theaterDestRect, Color.White);
 
@@ -78,7 +79,8 @@ namespace FlirtGame
             graphicsDevice.Clear(Color.Black);
             Rectangle mainDestRect = new Rectangle(renderTextureOffset.ToPoint(),(new Vector2(1080, 1920) * renderTextureScale).ToPoint());
             spriteBatch.Begin();
-                spriteBatch.Draw(mainRenderTexture, mainDestRect, Color.White);
+                spriteBatch.Draw(mainRenderTexture, mainDestRect,MainTextureTintColor);
+            spriteBatch.DrawString(ContentLibrary.GetFont(FontList.Sans_serif), "karim2989.itch.io & wassim tounsi", Vector2.Zero, new Color(100,100,100,20),0,Vector2.Zero,.3f,SpriteEffects.None,0);
             spriteBatch.End();
         }
     }

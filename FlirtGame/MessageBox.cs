@@ -36,7 +36,7 @@ namespace FlirtGame
 
             for (int i = 0; i < bodyMessage.Length; i++)
                 if (bodyMessage[i] != default(string))
-                    spriteBatch.DrawString(largefont, bodyMessage[i], GlobalPosition + positionOffset + Vector2.UnitY *44*i, new Color(192,192,192,255));
+                    spriteBatch.DrawString(largefont, bodyMessage[i], GlobalPosition + positionOffset + Vector2.UnitY *48*i, new Color(192,192,192,255));
 
             Vector2 bottomMessagePosition = (bound.Location + bound.Size).ToVector2() - (smallfont.MeasureString(bottomMessage) + new Vector2(40,15));
             if(ShowBottomText) spriteBatch.DrawString(smallfont, bottomMessage, bottomMessagePosition, new Color(192,192,192,255));
