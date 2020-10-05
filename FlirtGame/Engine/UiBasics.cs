@@ -1,10 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace Engine.UI
 {
-    public abstract class Element
+    public abstract class Element : System.Object
     {
         public Element(Element parent,Vector2 position)
         {
@@ -49,6 +50,16 @@ namespace Engine.UI
             this.Position = Area.Location.ToVector2();
         }
 
+        public Canvas Clone()
+        {
+            var output = this.MemberwiseClone() as Canvas;
+            output.Children = new List<Element>();
+            foreach (var c in this.Children)
+                output.Children.Add(c);
+
+            return output;
+        }
+
         public override void Update(GameTime gameTime)
         {
             foreach (var element in Children)
@@ -66,8 +77,14 @@ namespace Engine.UI
     {
         public Container(Element parent, Vector2 position) : base(parent, position) { }
 
+        public Sprite Bg;
+        public Vector2 BgSize;
+        public Color TintColor;
+
         public override void Draw(SpriteBatch spriteBatch)
         {
+            if (Bg != null) Bg.Draw(spriteBatch, new Rectangle(Position.ToPoint(),BgSize.ToPoint()),0,false,TintColor);
+
             foreach (var child in Children)
                 child.Draw(spriteBatch);
         }

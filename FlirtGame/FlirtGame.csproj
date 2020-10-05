@@ -43,6 +43,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ContentLibrary.cs" />
+    <Compile Include="Editor\EditorScreen.cs" />
+    <Compile Include="Editor\ScenarioWriter.cs" />
     <Compile Include="Engine\AnimatedSprite.cs" />
     <Compile Include="Engine\Button.cs" />
     <Compile Include="Engine\CircleCollider.cs" />

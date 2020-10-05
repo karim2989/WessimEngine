@@ -66,7 +66,7 @@ namespace FlirtGame
             graphicsDevice.Clear(Color.Gray);
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, null);
 
-                Canvas.Draw(spriteBatch);
+            Canvas.Draw(spriteBatch);
 
             Rectangle theaterDestRect = new Rectangle(Point.Zero,(new Vector2(1080, 462)).ToPoint());
                 if(Theater.Active)

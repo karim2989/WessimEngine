@@ -70,6 +70,7 @@ namespace FlirtGame
 
             spriteBatch.End();
         }
+        public Theater Clone() => this.MemberwiseClone() as Theater;
     }
     public class TheaterCharacter
     {

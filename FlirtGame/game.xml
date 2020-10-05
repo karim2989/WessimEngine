@@ -1,6 +1,12 @@
 <MapNames>player;babrin;mahrez;melek;monjia;mounir;mounira</MapNames>
 
 <screen id="A">
+	<CharacterState visible="fasle" character="person2"/>
+	<CharacterState visible="fasle" character="person4"/>
+	<CharacterState visible="fasle" character="person5"/>
+	<CharacterState visible="fasle" character="person6"/>
+	<CharacterState visible="fasle" character="person7"/>
+
 	<setvariable target="name" value="karim"/>
 	<CharacterState visible="true" character="player" position="82" direction="left"/>
 	<CharacterState visible="true" character="mahrez" emotion="h" action="walkin" position="288" direction="left"/>
@@ -78,7 +84,7 @@
 </screen>
 
 <screen id="B-3">
-	<m icon ="monjia happy lvl1">hello,name;,im monjia an artist</m>
+	<m icon ="monjia happy lvl1">hello,$name;,im monjia an artist</m>
 	<m icon="mounir happy lvl1 ">mounir a mangaka</m>
 	<m icon ="mounira happy lvl1">heloo,iam mounira i work at zahra</m>
 	<m icon= "melek S lvl1">hey,iam melek a prog euh.. a programeur or whatever></m>
@@ -89,26 +95,26 @@
 
 <screen id="D-1">
 	<Q>
-		<CH target="D-2" icon="monjia happy lvl1">ask monjia out...</CH>
-		<CH target="D-3" icon="mounir happy lvl1">ask mounir to go out and have a cigarette</CH>
-		<CH target="D-4" icon="mounira happy lvl1"> talk to mounira only,while the others go one by one  </CH>
-		<CH target="D-5" icon="melek happy lvl1">ask melek if she want to have a beer with you </CH>
-		<CH target="D-6" icon="babrin happy lvl2">ask babrin if she want accompany you to silmehaf concert</CH>
+		<CH target="D-2" icon="player  happy lvl1"> wa3 9attous, hayya to5roj m3aya ;)</CH>
+		<CH target="D-3" icon="player  happy lvl1"> mounir, lets go out and have a cigarette</CH>
+		<CH target="D-6-1" icon="player  happy lvl1"> ...  </CH>
+		<CH target="D-5" icon="player  happy lvl1"> melek, wanna have a beer with me ? </CH>
+		<CH target="C-4" icon="player  happy lvl2"> babrin, im going to silmehaf concert tommorow. wanna come with me ?</CH>
 	</Q>
 </screen>
 
 <screen id="D-2">
 	<m icon="monjia n">What ?</m>
-	<m icon="monjia s">who are you ?</m>
+	<m icon="monjia s">What do you mean ?</m>
 	<CharacterState character="monjia" direction="right" action="walkin"/>
 	<wait time="40"/>
-	<m icon="person7">where you trying to sound funny ?</m>
+	<m icon="person6 ">where you trying to sound funny ?</m>
+	<wait time="20"/>
 	<fullscreenmessage>ending 3: a bit too fast</fullscreenmessage>
 	<setscreen target="A"/>
 </screen>
 
 <screen id="D-3">
-
 	<fullscreenmessage>you lost because mounir is not a smoker,and you're gay,why are you gay?</fullscreenmessage>
 	<setscreen target="A"/>
 </screen>
@@ -127,15 +133,50 @@
 	<setscreen target="D-6"/>
 </screen>
 
+<screen id="D-6-1">
+	<CharacterState character="character2" action="talk" direction="right"/>
+	<CharacterState character="character3" direction="left"/>
+	<wait time="10"/>
+	<CharacterState character="character4" action="talk"/>
+	<CharacterState character="character5" action="talk"/>
+	<wait time="20"/>
+	<CharacterState character="character3" action="talk"/>
+	<wait time="50"/>
+	<CharacterState character="mounir" action="talk" direction="right"/>
+	<CharacterState character="monjia" direction="left"/>
+	<wait time="30"/>
+	<CharacterState character="character2" action="talk"/>
+	<CharacterState character="character3" action="talk"/>
+	<CharacterState character="melek" direction="left" action="talk"/>
+	<wait time="20"/>
+	<CharacterState character="character3" direction="left" action="walkin"/>
+	<CharacterState character="character2" direction="left" action="walkin"/>
+	<CharacterState character="melek" direction="left" action="walkin"/>
+
+	<CharacterState character="mounir" action="talk" direction="right"/>
+	<CharacterState character="monjia" action="talk" direction="left"/>
+	<wait time="20"/>
+	<CharacterState character="mounir" action="walkin" direction="right"/>
+	<CharacterState character="monjia" action="walkin" direction="right"/>
+
+	<wait time="40"/>
+	<CharacterState character="player" visible="true" action="walkin" direction="right"/>
+	<wait time="50"/>
+	<m icon="player n"> h- hey. </m>
+	<m icon="mounira h"> hey. </m>
+
+	<setscreen target="D-6"/>
+</screen>
+
 <screen id="D-6">
-	<m icon="mounira N ">how long have you known mahrez?></m>
+	<m icon="mounira N ">how long have you known mahrez?</m>
 	<setscreen target="E-1"/>
 </screen>
 
 <screen id="E-1">
 	<Q>
-		<CH target="E-2" icon="me happy lvl1">it's been 3 years, i've met him in an amusment park</CH>
-		<CH target="E-3" icon="me happy lvl1">it's been since we were kids what about you</CH>
+		<CH target="E-2" icon="player happy lvl1">it's been 3 years, i've met him in an amusment park</CH>
+		<CH target="E-3" icon="player happy lvl1">it's been since we were kids what about you</CH>
 	</Q>
 </screen>
 
@@ -152,8 +193,8 @@
 <screen id="F-1">
 	<Q question="what to say?">
 		<CH target="H-1" icon="player happy lvl1">so mounira,where is your boyfriend?</CH>
-		<CH target="H-2" icon="player happy lvl1">so monjia,where is your boyfriend?></CH>
-		<CH target="H-3" icon="me happy lvl1">do you have you boyfriend></CH>
+		<CH target="H-2" icon="player happy lvl1">so monjia,where is your boyfriend?</CH>
+		<CH target="H-3" icon="player happy lvl1">do you have you boyfriend ?</CH>
 	</Q>
 </screen>
 
@@ -167,14 +208,14 @@
 </screen>
 
 <screen id="H-1">
-	<m icon="mounira happy lvl1">oh,actualy i dont have a boyfriend></m>
+	<m icon="mounira happy lvl1">oh,actualy, i don't have one</m>
 	<setscreen target="K-1"/>
 </screen>
 
 <screen id="K-1">
 	<Q>
-		<CH target="K-2" icon="me happy lvl1">i can see.</CH>
-		<CH target="K-3" icon="me happy lvl1">you're too beautiful too be single</CH>
+		<CH target="K-2" icon="player happy lvl1">i see.</CH>
+		<CH target="K-3" icon="player happy lvl1">you're too beautiful too be single</CH>
 	</Q>
 </screen>
 
@@ -189,8 +230,8 @@
 
 <screen id="L-1">
 	<Q>
-		<CH target="L-2" icon="me happy lvl2">ask her if she want to dance with you </CH>
-		<CH target="L-3" icon="me happy lvl2">ask her if she want to be yours</CH>
+		<CH target="L-2" icon="player happy lvl2">ask her if she want to dance with you </CH>
+		<CH target="L-3" icon="player happy lvl2">ask her if she want to be yours</CH>
 	</Q>
 </screen>
 <screen id="L-3">
@@ -205,9 +246,9 @@
 
 <screen id="M-1">
 	<Q>
-		<CH target="M-2" icon="me happy lvl2">i want to see you dance like you're my thurman ,let me be your jhon trovalta</CH>
-		<CH target="M-3" icon="me happy lvl2">*dance like you're on a solo dance and look to the girl*</CH>
-		<CH target="M-4" icon="me happy lvl2">*hareb hareb hareb*</CH>
+		<CH target="M-2" icon="player happy lvl2">i want to see you dance like you're my thurman ,let me be your jhon trovalta</CH>
+		<CH target="M-3" icon="player happy lvl2">*dance like you're on a solo dance and look to the girl*</CH>
+		<CH target="M-4" icon="player happy lvl2">*hareb hareb hareb*</CH>
 	</Q>
 </screen>
 
@@ -245,8 +286,8 @@
 
 <screen id="O-2">
 	<Q>
-		<CH target="P-1" icon="me happy lvl1">oh, okay with pleasure</CH>
-		<CH target="P-2" icon="me happy lvl1">acctually i can not mom is calling me to go home</CH>
+		<CH target="P-1" icon="player happy lvl1">oh, okay with pleasure</CH>
+		<CH target="P-2" icon="player happy lvl1">acctually i can not mom is calling me to go home</CH>
 	</Q>
 </screen>
 
@@ -262,8 +303,8 @@
 
 <screen id="P-4">
 	<Q>
-		<CH target="P-5" icon="me happy lvl2">kiss her on cheeks,and go home></CH>
-		<CH target="P-6" icon="me happy lvl2">tell her if  you can enter her home until it stops raining</CH>
+		<CH target="P-5" icon="player happy lvl2">kiss her on cheeks,and go home</CH>
+		<CH target="P-6" icon="player happy lvl2">tell her if  you can enter her home until it stops raining</CH>
 	</Q>
 </screen>
 
